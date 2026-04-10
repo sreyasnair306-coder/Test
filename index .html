@@ -1,0 +1,418 @@
+
+<style>
+  @keyframes float {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)}
+  }
+  @keyframes sparkle {
+    0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.5)}
+  }
+  @keyframes cakePopup {
+    0%{transform:scale(0) translateY(60px);opacity:0}
+    70%{transform:scale(1.1) translateY(-10px);opacity:1}
+    100%{transform:scale(1) translateY(0);opacity:1}
+  }
+  @keyframes payasamPopup {
+    0%{transform:scale(0) translateY(60px);opacity:0}
+    70%{transform:scale(1.1) translateY(-10px);opacity:1}
+    100%{transform:scale(1) translateY(0);opacity:1}
+  }
+  @keyframes shimmer {
+    0%{background-position:200% center} 100%{background-position:-200% center}
+  }
+  @keyframes flame {
+    0%,100%{transform:scaleX(1) scaleY(1)} 25%{transform:scaleX(0.8) scaleY(1.2)} 75%{transform:scaleX(1.1) scaleY(0.9)}
+  }
+  @keyframes confetti-fall {
+    0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+    100%{transform:translateY(400px) rotate(720deg);opacity:0}
+  }
+  @keyframes pulse-glow {
+    0%,100%{box-shadow:0 0 20px rgba(255,180,50,0.4)} 50%{box-shadow:0 0 40px rgba(255,180,50,0.8)}
+  }
+  @keyframes steam {
+    0%{transform:translateY(0) scaleX(1);opacity:0.7} 100%{transform:translateY(-30px) scaleX(1.5);opacity:0}
+  }
+  @keyframes bounce-in {
+    0%{transform:scale(0)} 60%{transform:scale(1.15)} 100%{transform:scale(1)}
+  }
+  @keyframes flower-spin {
+    0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)}
+  }
+
+  .page {
+    min-height: 600px;
+    background: linear-gradient(135deg, #fff5e6 0%, #ffe0f0 40%, #e8f0ff 100%);
+    padding: 2rem 1rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    font-family: Georgia, serif;
+    border-radius: 16px;
+  }
+
+  .confetti-piece {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confetti-fall linear infinite;
+    pointer-events: none;
+  }
+
+  .name-title {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    background: linear-gradient(90deg, #e91e63, #ff9800, #9c27b0, #2196f3, #e91e63);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+    line-height: 1.1;
+    margin: 0.2rem 0;
+  }
+  .sub-name {
+    font-size: clamp(1rem, 3vw, 1.4rem);
+    color: #9c27b0;
+    font-style: italic;
+    margin: 0.1rem 0 0.5rem;
+  }
+  .big-wish {
+    font-size: clamp(1.3rem, 4vw, 2rem);
+    color: #c2185b;
+    font-weight: 700;
+    animation: float 3s ease-in-out infinite;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
+
+  .cards-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.85);
+    border-radius: 20px;
+    padding: 1.2rem 1.5rem;
+    width: 220px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    backdrop-filter: blur(4px);
+  }
+  .card.cake-card { animation: cakePopup 0.9s cubic-bezier(.22,1,.36,1) 0.3s both; }
+  .card.payasam-card { animation: payasamPopup 0.9s cubic-bezier(.22,1,.36,1) 0.7s both; }
+
+  .cake-svg, .payasam-svg { overflow: visible; }
+
+  .flame-el { animation: flame 0.5s ease-in-out infinite; transform-origin: bottom center; }
+
+  .steam-el {
+    animation: steam 1.5s ease-out infinite;
+    transform-origin: bottom center;
+  }
+  .steam-el:nth-child(2){animation-delay:0.5s}
+  .steam-el:nth-child(3){animation-delay:1s}
+
+  .card-label {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: #6d1b7b;
+  }
+
+  .timer-box {
+    background: rgba(255,255,255,0.9);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    display: inline-block;
+    margin: 1rem auto;
+    animation: pulse-glow 2s ease-in-out infinite;
+    border: 2px solid #ffb300;
+  }
+  .timer-title {
+    font-size: 0.85rem;
+    color: #e65100;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .timer-digits {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .digit-block {
+    background: linear-gradient(135deg, #ff6f00, #e91e63);
+    color: white;
+    border-radius: 10px;
+    padding: 0.3rem 0.6rem;
+    min-width: 52px;
+    text-align: center;
+  }
+  .digit-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    font-family: monospace;
+  }
+  .digit-label {
+    font-size: 0.62rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .colon { font-size: 1.6rem; color: #e65100; font-weight: 700; }
+
+  .flower {
+    position: absolute;
+    font-size: 1.4rem;
+    animation: float 4s ease-in-out infinite;
+    pointer-events: none;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+  }
+
+  .sparkle-star {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: #ffd700;
+    clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+    animation: sparkle 1.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .message-box {
+    background: rgba(255,255,255,0.8);
+    border-left: 4px solid #e91e63;
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    max-width: 420px;
+    margin: 0.5rem auto;
+    font-size: 0.97rem;
+    color: #4a148c;
+    line-height: 1.6;
+    text-align: left;
+    font-style: italic;
+  }
+
+  .birthday-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #e91e63, #9c27b0);
+    color: white;
+    border-radius: 30px;
+    padding: 0.3rem 1.2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    animation: bounce-in 0.6s cubic-bezier(.22,1,.36,1) 0.1s both;
+  }
+</style>
+
+<div class="page" id="page">
+
+  <!-- Confetti -->
+  <div id="confetti-container"></div>
+
+  <!-- Floating decorations -->
+  <div class="flower" style="top:5%;left:5%;animation-delay:0s">🌸</div>
+  <div class="flower" style="top:8%;right:6%;animation-delay:1s">🌺</div>
+  <div class="flower" style="top:20%;left:2%;animation-delay:2s">🌼</div>
+  <div class="flower" style="bottom:15%;left:4%;animation-delay:0.5s">💐</div>
+  <div class="flower" style="bottom:10%;right:5%;animation-delay:1.5s">🌹</div>
+  <div class="flower" style="top:40%;right:2%;animation-delay:2.5s">✨</div>
+
+  <!-- Sparkle stars -->
+  <div class="sparkle-star" style="top:15%;left:30%;animation-delay:0.2s"></div>
+  <div class="sparkle-star" style="top:12%;right:28%;animation-delay:0.8s;background:#ff69b4"></div>
+  <div class="sparkle-star" style="bottom:25%;left:20%;animation-delay:1.2s;background:#9c27b0"></div>
+  <div class="sparkle-star" style="bottom:30%;right:22%;animation-delay:0.5s"></div>
+
+  <div class="birthday-badge">Happy Birthday! 🎉</div>
+
+  <div class="name-title">Ammu</div>
+  <div class="sub-name">(Lalitha Ammu)</div>
+
+  <div class="big-wish">Wishing you a beautiful birthday! 🎂</div>
+
+  <!-- Timer -->
+  <div class="timer-box">
+    <div class="timer-title">🕐 Birthday countdown</div>
+    <div class="timer-digits">
+      <div class="digit-block"><div class="digit-num" id="t-days">00</div><div class="digit-label">days</div></div>
+      <div class="colon">:</div>
+      <div class="digit-block"><div class="digit-num" id="t-hrs">00</div><div class="digit-label">hrs</div></div>
+      <div class="colon">:</div>
+      <div class="digit-block"><div class="digit-num" id="t-min">00</div><div class="digit-label">min</div></div>
+      <div class="colon">:</div>
+      <div class="digit-block"><div class="digit-num" id="t-sec">00</div><div class="digit-label">sec</div></div>
+    </div>
+    <div id="timer-msg" style="font-size:0.8rem;color:#e65100;margin-top:0.4rem;font-weight:600"></div>
+  </div>
+
+  <!-- Cake & Payasam cards -->
+  <div class="cards-row">
+
+    <!-- Cake Card -->
+    <div class="card cake-card">
+      <svg class="cake-svg" viewBox="0 0 160 170" width="140" height="148">
+        <!-- Plate -->
+        <ellipse cx="80" cy="158" rx="70" ry="10" fill="#f8bbd0" opacity="0.6"/>
+        <!-- Bottom tier -->
+        <rect x="15" y="110" width="130" height="42" rx="10" fill="#f48fb1"/>
+        <rect x="15" y="108" width="130" height="8" rx="4" fill="#f06292"/>
+        <!-- Frosting drips bottom -->
+        <ellipse cx="35" cy="110" rx="8" ry="6" fill="#fff9c4"/>
+        <ellipse cx="58" cy="113" rx="7" ry="5" fill="#fff9c4"/>
+        <ellipse cx="82" cy="110" rx="8" ry="6" fill="#fff9c4"/>
+        <ellipse cx="106" cy="113" rx="7" ry="5" fill="#fff9c4"/>
+        <ellipse cx="128" cy="110" rx="8" ry="6" fill="#fff9c4"/>
+        <!-- Bottom tier deco dots -->
+        <circle cx="35" cy="125" r="5" fill="#ff80ab"/>
+        <circle cx="55" cy="130" r="4" fill="#ea80fc"/>
+        <circle cx="75" cy="125" r="5" fill="#ff80ab"/>
+        <circle cx="95" cy="130" r="4" fill="#ea80fc"/>
+        <circle cx="115" cy="125" r="5" fill="#ff80ab"/>
+        <!-- Middle tier -->
+        <rect x="28" y="74" width="104" height="38" rx="8" fill="#ce93d8"/>
+        <rect x="28" y="72" width="104" height="8" rx="4" fill="#ba68c8"/>
+        <!-- Frosting drips mid -->
+        <ellipse cx="45" cy="74" rx="7" ry="5" fill="#fff9c4"/>
+        <ellipse cx="66" cy="77" rx="6" ry="4" fill="#fff9c4"/>
+        <ellipse cx="88" cy="74" rx="7" ry="5" fill="#fff9c4"/>
+        <ellipse cx="110" cy="77" rx="6" ry="4" fill="#fff9c4"/>
+        <!-- Mid tier deco -->
+        <text x="80" y="96" text-anchor="middle" font-size="11" fill="white" font-family="Georgia,serif">Happy Birthday!</text>
+        <!-- Top tier -->
+        <rect x="44" y="42" width="72" height="34" rx="8" fill="#fff176"/>
+        <rect x="44" y="40" width="72" height="8" rx="4" fill="#ffee58"/>
+        <!-- Frosting drips top -->
+        <ellipse cx="58" cy="42" rx="6" ry="4" fill="#fff9c4"/>
+        <ellipse cx="80" cy="45" rx="5" ry="3.5" fill="#fff9c4"/>
+        <ellipse cx="101" cy="42" rx="6" ry="4" fill="#fff9c4"/>
+        <!-- Candles -->
+        <rect x="60" y="22" width="8" height="20" rx="3" fill="#ff7043"/>
+        <rect x="76" y="18" width="8" height="24" rx="3" fill="#29b6f6"/>
+        <rect x="92" y="22" width="8" height="20" rx="3" fill="#66bb6a"/>
+        <!-- Flames -->
+        <ellipse cx="64" cy="20" rx="5" ry="7" fill="#ffeb3b" class="flame-el"/>
+        <ellipse cx="64" cy="20" rx="3" ry="5" fill="#ff9800" class="flame-el"/>
+        <ellipse cx="80" cy="16" rx="5" ry="7" fill="#ffeb3b" class="flame-el" style="animation-delay:0.2s"/>
+        <ellipse cx="80" cy="16" rx="3" ry="5" fill="#ff9800" class="flame-el" style="animation-delay:0.2s"/>
+        <ellipse cx="96" cy="20" rx="5" ry="7" fill="#ffeb3b" class="flame-el" style="animation-delay:0.4s"/>
+        <ellipse cx="96" cy="20" rx="3" ry="5" fill="#ff9800" class="flame-el" style="animation-delay:0.4s"/>
+        <!-- Stars on cake -->
+        <text x="52" y="60" font-size="10">⭐</text>
+        <text x="100" y="58" font-size="10">⭐</text>
+      </svg>
+      <div class="card-label">🎂 Birthday Cake</div>
+    </div>
+
+    <!-- Payasam Card -->
+    <div class="card payasam-card">
+      <svg class="payasam-svg" viewBox="0 0 160 170" width="140" height="148">
+        <!-- Steam -->
+        <path d="M62 55 Q60 44 64 36 Q68 28 64 20" stroke="#b0bec5" stroke-width="2.5" fill="none" stroke-linecap="round" class="steam-el"/>
+        <path d="M80 52 Q78 41 82 33 Q86 24 82 16" stroke="#b0bec5" stroke-width="2.5" fill="none" stroke-linecap="round" class="steam-el" style="animation-delay:0.5s"/>
+        <path d="M98 55 Q96 44 100 36 Q104 28 100 20" stroke="#b0bec5" stroke-width="2.5" fill="none" stroke-linecap="round" class="steam-el" style="animation-delay:1s"/>
+        <!-- Bowl shadow -->
+        <ellipse cx="80" cy="158" rx="62" ry="9" fill="#d7ccc8" opacity="0.5"/>
+        <!-- Bowl body -->
+        <path d="M25 80 Q20 130 80 148 Q140 130 135 80 Z" fill="#ffecb3"/>
+        <!-- Payasam surface -->
+        <ellipse cx="80" cy="80" rx="55" ry="18" fill="#ffe082"/>
+        <!-- Payasam texture / color richness -->
+        <ellipse cx="80" cy="80" rx="42" ry="12" fill="#ffd54f" opacity="0.7"/>
+        <!-- Rose water drops / garnish -->
+        <circle cx="60" cy="78" r="4" fill="#ff8a65" opacity="0.8"/>
+        <circle cx="80" cy="76" r="5" fill="#ff7043" opacity="0.7"/>
+        <circle cx="100" cy="78" r="4" fill="#ff8a65" opacity="0.8"/>
+        <!-- Cashew shape -->
+        <path d="M55 82 Q57 78 62 80 Q57 86 55 82Z" fill="#f5deb3"/>
+        <path d="M94 82 Q96 78 101 80 Q96 86 94 82Z" fill="#f5deb3"/>
+        <!-- Raisin dots -->
+        <circle cx="72" cy="82" r="2.5" fill="#5d4037"/>
+        <circle cx="90" cy="80" r="2.5" fill="#5d4037"/>
+        <!-- Saffron color streaks -->
+        <path d="M65 74 Q80 70 95 74" stroke="#ff6f00" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
+        <!-- Bowl rim -->
+        <ellipse cx="80" cy="80" rx="55" ry="18" fill="none" stroke="#ffb300" stroke-width="3"/>
+        <!-- Bowl decorative band -->
+        <path d="M26 88 Q20 130 80 148 Q140 130 134 88" fill="none" stroke="#ff9800" stroke-width="2" opacity="0.5"/>
+        <!-- Bowl base -->
+        <ellipse cx="80" cy="148" rx="32" ry="8" fill="#ffe0b2"/>
+        <!-- Small spoon -->
+        <rect x="118" y="88" width="5" height="40" rx="2.5" fill="#bdbdbd" transform="rotate(20,120,108)"/>
+        <ellipse cx="114" cy="87" rx="7" ry="5" fill="#e0e0e0" transform="rotate(20,114,87)"/>
+      </svg>
+      <div class="card-label">🍮 Pal Payasam</div>
+    </div>
+
+  </div>
+
+  <!-- Heartfelt message -->
+  <div class="message-box">
+    Dear Ammu (Lalitha Ammu), may your birthday be as warm and sweet as your payasam, and as joyful as every moment you bring to our lives. You are loved beyond words. 💖
+  </div>
+
+  <div style="margin-top:1rem;font-size:1.3rem;animation:float 2.5s ease-in-out infinite;display:inline-block">
+    🌸 💖 🎊 💫 🌺 🎁 ✨
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // Confetti
+  const colors = ['#e91e63','#ff9800','#9c27b0','#2196f3','#4caf50','#ffeb3b','#ff5722'];
+  const container = document.getElementById('confetti-container');
+  for(let i=0;i<30;i++){
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${-10-Math.random()*30}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${6+Math.random()*8}px;
+      height:${6+Math.random()*8}px;
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      animation-duration:${3+Math.random()*4}s;
+      animation-delay:${Math.random()*5}s;
+      opacity:${0.6+Math.random()*0.4};
+    `;
+    container.appendChild(el);
+  }
+
+  // Timer — birthday is day after tomorrow (April 12, 2026)
+  const now = new Date();
+  const bday = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 2, 0, 0, 0);
+
+  function pad(n){return String(n).padStart(2,'0');}
+
+  function tick(){
+    const diff = bday - new Date();
+    const msg = document.getElementById('timer-msg');
+    if(diff <= 0){
+      document.getElementById('t-days').textContent='00';
+      document.getElementById('t-hrs').textContent='00';
+      document.getElementById('t-min').textContent='00';
+      document.getElementById('t-sec').textContent='00';
+      msg.textContent='🎉 Today is her birthday! Celebrate!';
+      return;
+    }
+    const d = Math.floor(diff/86400000);
+    const h = Math.floor((diff%86400000)/3600000);
+    const m = Math.floor((diff%3600000)/60000);
+    const s = Math.floor((diff%60000)/1000);
+    document.getElementById('t-days').textContent=pad(d);
+    document.getElementById('t-hrs').textContent=pad(h);
+    document.getElementById('t-min').textContent=pad(m);
+    document.getElementById('t-sec').textContent=pad(s);
+    msg.textContent = d===0 ? 'Just hours away!' : `${d} day${d>1?'s':''} to go!`;
+  }
+  tick();
+  setInterval(tick,1000);
+})();
+</script>
